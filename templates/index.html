@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prediction System</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --primary-light: #8A85FF;
+            --primary-dark: #5752D2;
+            --secondary: #FF6584;
+            --success: #36D1DC;
+            --dark: #2A2D3E;
+            --light: #F9FAFF;
+            --gray: #8D93A5;
+            --card-bg: #FFFFFF;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #F0F4FF 0%, #E6F0FF 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: var(--primary) !important;
+            display: flex;
+            align-items: center;
+            letter-spacing: -0.5px;
+        }
+
+        .navbar-brand i {
+            margin-right: 12px;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .main-container {
+            padding: 60px 0;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .page-title {
+            font-weight: 800;
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.4s, box-shadow 0.4s;
+            margin-bottom: 30px;
+            background: var(--card-bg);
+            height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 22px 30px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-header i {
+            margin-right: 12px;
+            font-size: 1.3rem;
+        }
+
+        .card-body {
+            padding: 35px;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            padding: 14px 18px;
+            border: 1.5px solid #E8ECF5;
+            transition: all 0.3s;
+            font-size: 1rem;
+            background: #F9FAFF;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.15);
+            background: white;
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 14px 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .btn-primary:hover, .btn-primary:focus {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3);
+        }
+
+        .btn-primary i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 30px 0;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1.5px solid #E8ECF5;
+        }
+
+        .divider::before {
+            margin-right: 20px;
+        }
+
+        .divider::after {
+            margin-left: 20px;
+        }
+
+        .result-box {
+            background: var(--light);
+            border-radius: 16px;
+            padding: 25px;
+            height: 300px;
+            overflow-y: auto;
+            border: 1.5px solid #E8ECF5;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .result-title {
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+        }
+
+        .result-title i {
+            margin-right: 12px;
+            font-size: 1.3rem;
+        }
+
+        .json-result {
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1.5px solid #E8ECF5;
+            font-size: 0.95rem;
+            white-space: pre-wrap;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        footer {
+            background: white;
+            padding: 30px 0;
+            margin-top: 70px;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .footer-links a {
+            color: var(--dark);
+            text-decoration: none;
+            margin: 0 18px;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 1rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .copyright {
+            color: var(--gray);
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
+
+        #loading {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            backdrop-filter: blur(5px);
+        }
+
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            animation: spin 1.5s linear infinite;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .loading-text {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+        }
+
+        .loading-subtext {
+            color: var(--gray);
+            margin-top: 8px;
+            font-size: 0.95rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .input-with-icon {
+            padding-left: 50px;
+        }
+
+        @media (max-width: 992px) {
+            .main-container {
+                padding: 40px 20px;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .card-body {
+                padding: 25px;
+            }
+
+            .footer-links a {
+                margin: 0 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .page-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .card-body {
+                padding: 20px;
+            }
+
+            .footer-links {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .footer-links a {
+                margin: 5px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-brain"></i>
+                AI Predictions
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">Advanced Prediction System</h1>
+                <p class="page-subtitle">Upload your dataset or use our default data to generate accurate predictions with our AI-powered algorithms</p>
+            </div>
+
+            <div class="row">
+                <!-- Input Section -->
+                <div class="col-lg-6 mb-5">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <i class="fas fa-cloud-upload-alt"></i> Data Input
+                        </div>
+                        <div class="card-body">
+                            <form method="post" id="datafetch_form" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="csvfile" class="form-label">Dataset File Path</label>
+                                    <div class="input-group">
+                                        <i class="input-icon fas fa-file-csv"></i>
+                                        <input type="text" name="csvfile" id="csvfile" class="form-control input-with-icon" placeholder="Enter absolute path to your CSV file" required>
+                                    </div>
+                                    <small class="form-text text-muted">Provide the complete path to your dataset file</small>
+                                </div>
+
+                                <button class="btn btn-primary mt-2" id="customfile">
+                                    <i class="fas fa-file-import"></i> Process Custom File
+                                </button>
+
+                                <div class="divider">OR USE DEFAULT DATASET</div>
+
+                                <button class="btn btn-primary" id="defaultfile" data-path="Prediction_Batch_files">
+                                    <i class="fas fa-database"></i> Use Default Dataset
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="col-lg-6 mb-5">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <i class="fas fa-chart-line"></i> Prediction Results
+                        </div>
+                        <div class="card-body">
+                            <div class="result-title">
+                                <i class="fas fa-poll-h"></i> Output Preview
+                            </div>
+                            <div class="result-box">
+                                <div class="json-result">
+<!-- Results will appear here -->
+No predictions generated yet.
+
+Please upload a CSV file or use the default dataset to generate predictions.
+
+The results will appear in this area once processing is complete.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="footer-links mb-3">
+                        <a href="#"><i class="fas fa-info-circle mr-1"></i> About</a>
+                        <a href="#"><i class="fas fa-envelope mr-1"></i> Contact</a>
+                        <a href="#"><i class="fas fa-lock mr-1"></i> Privacy</a>
+                        <a href="#"><i class="fas fa-file-contract mr-1"></i> Terms</a>
+                        <a href="#"><i class="fas fa-question-circle mr-1"></i> Support</a>
+                    </div>
+                    <p class="copyright">&copy; 2023 AI Prediction System. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div id="loading">
+        <div class="loader"></div>
+        <div class="loading-text">Processing Your Data</div>
+        <div class="loading-subtext">This may take a few moments</div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#loading').hide();
+
+            $("#customfile").click(function(e){
+                e.preventDefault();
+                $('#loading').show();
+                var path = $("#csvfile").val();
+
+                if (!path) {
+                    alert("Please enter a file path");
+                    $('#loading').hide();
+                    return;
+                }
+
+                // Simulate API call delay
+                setTimeout(function() {
+                    $.ajax({
+                        url: "/predict",
+                        type: "POST",
+                        data: {filepath: path},
+                        success: function(response){
+                            $(".json-result").html('<span style="color: var(--primary); font-weight: 600;">Prediction completed successfully!</span>\n\nPrediction file created at: "Prediction_Output_File/Predictions.csv"\n\nSample predictions:\n\n' + response);
+                            $('#loading').hide();
+                        },
+                        error: function() {
+                            $(".json-result").html('<span style="color: var(--secondary); font-weight: 600;">Error processing your request</span>\n\nPlease check the file path and try again.\n\nMake sure the file exists and is in the correct format.');
+                            $('#loading').hide();
+                        }
+                    });
+                }, 2000);
+            });
+
+            $("#defaultfile").click(function(e){
+                e.preventDefault();
+                $('#loading').show();
+                var path = $(this).attr("data-path");
+
+                // Simulate API call delay
+                setTimeout(function() {
+                    $.ajax({
+                        url: "/predict",
+                        type: "POST",
+                        data: {filepath: path},
+                        success: function(response){
+                            $(".json-result").html('<span style="color: var(--primary); font-weight: 600;">Prediction completed successfully!</span>\n\nUsing default dataset: "Prediction_Batch_files"\n\nPrediction file created at: "Prediction_Output_File/Predictions.csv"\n\nSample predictions:\n\n' + response);
+                            $('#loading').hide();
+                        },
+                        error: function() {
+                            $(".json-result").html('<span style="color: var(--secondary); font-weight: 600;">Error processing default dataset</span>\n\nPlease try again or use a custom file.');
+                            $('#loading').hide();
+                        }
+                    });
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
